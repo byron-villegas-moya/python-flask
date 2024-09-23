@@ -10,8 +10,7 @@ jobs:
     container:
       image: python:3.12.5
     steps:
-      - name: List files
-        run: ls
+      - uses: actions/checkout@v3
       - name: Change ownership of /github/home
         run: chown -R $(whoami) /github/home
       - name: Create environment
