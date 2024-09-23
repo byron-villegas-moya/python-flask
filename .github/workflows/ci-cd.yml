@@ -21,3 +21,25 @@ jobs:
         run: coverage report
       - name: Generate html coverage report
         run: coverage html
+      - uses: actions/upload-artifact@v4
+        with:
+          name: htmlcov
+          path: htmlcov/
+  build:
+    runs-on: python:3.12.5
+    steps:
+      - name: Create environment
+        run: python3 -m venv .venv
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy by hook
+        run: curl -X POST $RENDER_DEPLOY_HOOK > deploy.json
+      - name: Sleep by two minutes
+        run: sleep 120
+      - uses: actions/upload-artifact@v4
+        with:
+          name: deploy
+          path: deploy.json
