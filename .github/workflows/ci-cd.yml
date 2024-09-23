@@ -34,7 +34,9 @@ jobs:
           key: venv
           path: .venv/
       - name: Activate environment
-        run: sh .venv/bin/activate
+        run: . .venv/bin/activate
+      - name: Show package list
+        run: echo pip list
       - name: Execute test with coverage
         run: coverage run -m pytest
       - name: Show coverage on console
