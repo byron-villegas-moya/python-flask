@@ -9,7 +9,7 @@ permissions:
 
 jobs:
   build:
-    runs-on: python:3.12.5
+    runs-on: python-3.12.5
     steps:
       - name: Create environment
         run: python3 -m venv .venv
@@ -21,7 +21,7 @@ jobs:
           path: .venv/
   unit-test:
     needs: [build]
-    runs-on: python:3.12.5
+    runs-on: python-3.12.5
     steps:
       - name: Execute test with coverage
         run: coverage run -m pytest
