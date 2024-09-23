@@ -1,0 +1,23 @@
+name: CI/CD
+
+on:
+  push:
+    branches: [ "main" ]
+
+permissions:
+  contents: read
+
+jobs:
+  unit-test:
+    runs-on: python:3.12.5
+    steps:
+      - name: Create environment
+        run: python3 -m venv .venv
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Execute test with coverage
+        run: coverage run -m pytest
+      - name: Show coverage on console
+        run: coverage report
+      - name: Generate html coverage report
+        run: coverage html
