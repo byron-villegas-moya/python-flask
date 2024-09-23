@@ -17,11 +17,6 @@ jobs:
         run: python3 -m venv .venv
       - name: Install dependencies
         run: pip install -r requirements.txt
-      - name: Cache environment
-        uses: actions/cache@v3
-        with:
-          key: venv
-          path: .venv/
   unit-test:
     needs: [build]
     runs-on: ubuntu-latest
@@ -30,15 +25,10 @@ jobs:
     steps:
       - name: Change ownership of /github/home
         run: chown -R $(whoami) /github/home
-      - name: Restore cached environment
-        uses: actions/cache/restore@v3
-        with:
-          key: venv
-          path: .venv/
-      - name: Activate environment
-        run: . .venv/bin/activate
-      - name: Show package list
-        run: pip list
+      - name: Create environment
+        run: python3 -m venv .venv
+      - name: Install dependencies
+        run: pip install -r requirements.txt
       - name: Execute test with coverage
         run: coverage run -m pytest
       - name: Show coverage on console
