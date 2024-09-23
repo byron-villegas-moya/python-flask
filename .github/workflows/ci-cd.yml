@@ -11,7 +11,7 @@ jobs:
       image: python:3.12.5
     steps:
       - name: Change ownership of /github/home
-        run: sudo chown -R $(whoami) /github/home
+        run: chown -R $(whoami) /github/home
       - name: Create environment
         run: python3 -m venv .venv
       - name: Install dependencies
