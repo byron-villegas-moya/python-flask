@@ -36,10 +36,16 @@ jobs:
         run: coverage report
       - name: Generate html coverage report
         run: coverage html
+      - name: Generate xml coverage report
+        run: coverage xml
       - uses: actions/upload-artifact@v4
         with:
           name: htmlcov
           path: htmlcov/
+      - name: Code Coverage Summary Report
+        uses: irongut/CodeCoverageSummary@v1.3.0
+        with:
+          filename: coverage.xml
   deploy:
     needs: [build, unit-test]
     runs-on: ubuntu-latest
