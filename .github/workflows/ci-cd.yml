@@ -43,6 +43,8 @@ jobs:
   deploy:
     needs: [build, unit-test]
     runs-on: ubuntu-latest
+    env:
+      RENDER_DEPLOY_HOOK: ${{ secrets.RENDER_DEPLOY_HOOK }}
     steps:
       - name: Deploy by hook
         run: curl -X POST $RENDER_DEPLOY_HOOK > deploy.json
