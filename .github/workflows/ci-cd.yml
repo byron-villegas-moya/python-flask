@@ -18,7 +18,7 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
       - name: Cache environment
-        uses: actions/cache@v4
+        uses: actions/cache@v3
         with:
           path: .venv/
   unit-test:
@@ -28,7 +28,7 @@ jobs:
       image: python:3.12.5
     steps:
       - name: Restore cached env
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v3
         with:
           path: .venv/
       - name: Execute test with coverage
