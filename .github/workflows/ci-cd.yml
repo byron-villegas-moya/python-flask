@@ -8,13 +8,21 @@ permissions:
   contents: read
 
 jobs:
-  unit-test:
+  build:
     runs-on: python:3.12.5
     steps:
       - name: Create environment
         run: python3 -m venv .venv
       - name: Install dependencies
         run: pip install -r requirements.txt
+      - name: Cache environment
+        uses: actions/cache@v3
+        with:
+          path: .venv/
+  unit-test:
+    needs: [build]
+    runs-on: python:3.12.5
+    steps:
       - name: Execute test with coverage
         run: coverage run -m pytest
       - name: Show coverage on console
@@ -25,14 +33,8 @@ jobs:
         with:
           name: htmlcov
           path: htmlcov/
-  build:
-    runs-on: python:3.12.5
-    steps:
-      - name: Create environment
-        run: python3 -m venv .venv
-      - name: Install dependencies
-        run: pip install -r requirements.txt
   deploy:
+    needs: [build, unit-test]
     runs-on: ubuntu-latest
     steps:
       - name: Deploy by hook
