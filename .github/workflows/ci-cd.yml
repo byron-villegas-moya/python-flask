@@ -10,10 +10,12 @@ jobs:
     container:
       image: python:3.12.5
     steps:
+      - name: Change ownership of /github/home
+        run: sudo chown -R $(whoami) /github/home
       - name: Create environment
         run: python3 -m venv .venv
       - name: Install dependencies
-        run: sudo -H pip install -r requirements.txt
+        run: pip install -r requirements.txt
       - name: Cache environment
         uses: actions/cache@v3
         with:
