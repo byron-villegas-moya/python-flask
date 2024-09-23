@@ -20,6 +20,7 @@ jobs:
       - name: Cache environment
         uses: actions/cache@v3
         with:
+          key: venv
           path: .venv/
   unit-test:
     needs: [build]
@@ -30,6 +31,7 @@ jobs:
       - name: Restore cached env
         uses: actions/cache/restore@v3
         with:
+          key: venv
           path: .venv/
       - name: Execute test with coverage
         run: coverage run -m pytest
