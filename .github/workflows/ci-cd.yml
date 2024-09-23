@@ -28,11 +28,13 @@ jobs:
     container:
       image: python:3.12.5
     steps:
-      - name: Restore cached env
+      - name: Restore cached environment
         uses: actions/cache/restore@v3
         with:
           key: venv
           path: .venv/
+      - name: Activate environment
+        run: source .venv/bin/activate
       - name: Execute test with coverage
         run: coverage run -m pytest
       - name: Show coverage on console
