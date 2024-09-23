@@ -46,6 +46,14 @@ jobs:
         uses: irongut/CodeCoverageSummary@v1.3.0
         with:
           filename: coverage.xml
+          badge: true
+          fail_below_min: true
+          format: markdown
+          hide_branch_rate: false
+          hide_complexity: true
+          indicators: true
+          output: both
+          thresholds: '80'
   deploy:
     needs: [build, unit-test]
     runs-on: ubuntu-latest
@@ -60,3 +68,41 @@ jobs:
         with:
           name: deploy
           path: deploy.json
+  acceptance-test:
+    needs: [deploy]
+    runs-on: ubuntu-latest
+    container:
+      image: python:3.12.5
+    steps:
+      - uses: actions/checkout@v3
+      - name: Change ownership of /github/home
+        run: chown -R $(whoami) /github/home
+      - name: Create environment
+        run: python3 -m venv .venv
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Run behave tests
+        run: behave acceptance-test/features -f html -o behave-report.html
+      - uses: actions/upload-artifact@v4
+        with:
+          name: behave-report.html
+          path: behave-report.html
+  performance-test:
+    needs: [deploy]
+    runs-on: ubuntu-latest
+    container:
+      image: python:3.12.5
+    steps:
+      - uses: actions/checkout@v3
+      - name: Change ownership of /github/home
+        run: chown -R $(whoami) /github/home
+      - name: Create environment
+        run: python3 -m venv .venv
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Run locust tests
+        run: locust -f performance-test/locust/python-flask.py -H https://python-flask-sus3.onrender.com -u 5 -r 10 -t 40 --headless --html locust-report.html
+      - uses: actions/upload-artifact@v4
+        with:
+          name: locust-report.html
+          path: locust-report.html
