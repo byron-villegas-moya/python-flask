@@ -15,7 +15,7 @@ jobs:
       - name: Create environment
         run: python3 -m venv .venv
       - name: Install dependencies
-        run: pip install -r /github/homerequirements.txt
+        run: pip install -r /github/home/requirements.txt
       - name: Cache environment
         uses: actions/cache@v3
         with:
