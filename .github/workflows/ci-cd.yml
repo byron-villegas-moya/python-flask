@@ -62,12 +62,12 @@ jobs:
     steps:
       - name: Deploy by hook
         run: curl -X POST $RENDER_DEPLOY_HOOK > deploy.json
-      - name: Sleep by two minutes
-        run: sleep 120
       - uses: actions/upload-artifact@v4
         with:
           name: deploy
           path: deploy.json
+      - name: Sleep by two minutes
+        run: sleep 120
   acceptance-test:
     needs: [deploy]
     runs-on: ubuntu-latest
