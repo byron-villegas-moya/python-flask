@@ -11,12 +11,11 @@ jobs:
       image: python:3.12.5
     steps:
       - uses: actions/checkout@v4
-      - name: Change ownership of /github/home
-        run: chown -R $(whoami) /github/home
-      - name: Create environment
+      - name: Create Environment
         run: python3 -m venv .venv
-      - name: Install dependencies
+      - name: Install Dependencies
         run: pip install -r requirements.txt
+
   unit-test:
     needs: [build]
     runs-on: ubuntu-latest
@@ -24,19 +23,17 @@ jobs:
       image: python:3.12.5
     steps:
       - uses: actions/checkout@v4
-      - name: Change ownership of /github/home
-        run: chown -R $(whoami) /github/home
-      - name: Create environment
+      - name: Create Environment
         run: python3 -m venv .venv
-      - name: Install dependencies
+      - name: Install Dependencies
         run: pip install -r requirements.txt
-      - name: Execute test with coverage
+      - name: Execute Test With Coverage
         run: coverage run -m pytest
-      - name: Show coverage on console
+      - name: Show Coverage On Console
         run: coverage report
-      - name: Generate html coverage report
+      - name: Generate HTML Coverage Report
         run: coverage html
-      - name: Generate xml coverage report
+      - name: Generate XML Coverage Report
         run: coverage xml
       - uses: actions/upload-artifact@v4
         with:
@@ -54,20 +51,22 @@ jobs:
           indicators: true
           output: both
           thresholds: '80'
+
   deploy:
     needs: [build, unit-test]
     runs-on: ubuntu-latest
     env:
       RENDER_DEPLOY_HOOK: ${{ secrets.RENDER_DEPLOY_HOOK }}
     steps:
-      - name: Deploy by hook
+      - name: Deploy With Hook
         run: curl -X POST $RENDER_DEPLOY_HOOK > deploy.json
       - uses: actions/upload-artifact@v4
         with:
           name: deploy
           path: deploy.json
-      - name: Sleep by two minutes
+      - name: Sleep By Two Minutes
         run: sleep 120
+
   acceptance-test:
     needs: [deploy]
     runs-on: ubuntu-latest
@@ -75,18 +74,17 @@ jobs:
       image: python:3.12.5
     steps:
       - uses: actions/checkout@v4
-      - name: Change ownership of /github/home
-        run: chown -R $(whoami) /github/home
-      - name: Create environment
+      - name: Create Environment
         run: python3 -m venv .venv
-      - name: Install dependencies
+      - name: Install Dependencies
         run: pip install -r requirements.txt
-      - name: Run behave tests
+      - name: Run Behave Tests
         run: behave acceptance-test/features -f html -o behave-report.html
       - uses: actions/upload-artifact@v4
         with:
           name: behave-report.html
           path: behave-report.html
+
   performance-test:
     needs: [deploy]
     runs-on: ubuntu-latest
@@ -94,13 +92,11 @@ jobs:
       image: python:3.12.5
     steps:
       - uses: actions/checkout@v4
-      - name: Change ownership of /github/home
-        run: chown -R $(whoami) /github/home
-      - name: Create environment
+      - name: Create Environment
         run: python3 -m venv .venv
-      - name: Install dependencies
+      - name: Install Dependencies
         run: pip install -r requirements.txt
-      - name: Run locust tests
+      - name: Run Locust Tests
         run: locust -f performance-test/locust/python-flask.py -H https://python-flask-sus3.onrender.com -u 5 -r 10 -t 40 --headless --html locust-report.html
       - uses: actions/upload-artifact@v4
         with:
