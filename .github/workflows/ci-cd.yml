@@ -10,7 +10,7 @@ jobs:
     container:
       image: python:3.12.5
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Change ownership of /github/home
         run: chown -R $(whoami) /github/home
       - name: Create environment
@@ -23,7 +23,7 @@ jobs:
     container:
       image: python:3.12.5
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Change ownership of /github/home
         run: chown -R $(whoami) /github/home
       - name: Create environment
@@ -74,7 +74,7 @@ jobs:
     container:
       image: python:3.12.5
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Change ownership of /github/home
         run: chown -R $(whoami) /github/home
       - name: Create environment
@@ -93,7 +93,7 @@ jobs:
     container:
       image: python:3.12.5
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Change ownership of /github/home
         run: chown -R $(whoami) /github/home
       - name: Create environment
