@@ -13,7 +13,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Create Environment
         run: python3 -m venv .venv
-      - name: Install Dependencies
+      - name: Install Packages
         run: pip install -r requirements.txt
   unit-test:
     needs: [build]
@@ -24,7 +24,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Create Environment
         run: python3 -m venv .venv
-      - name: Install Dependencies
+      - name: Install Packages
         run: pip install -r requirements.txt
       - name: Execute Test With Coverage
         run: coverage run -m pytest
@@ -73,7 +73,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Create Environment
         run: python3 -m venv .venv
-      - name: Install Dependencies
+      - name: Install Packages
         run: pip install -r requirements.txt
       - name: Run Behave Tests
         run: behave acceptance-test/features -f html -o behave-report.html
@@ -90,7 +90,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Create Environment
         run: python3 -m venv .venv
-      - name: Install Dependencies
+      - name: Install Packages
         run: pip install -r requirements.txt
       - name: Run Locust Tests
         run: locust -f performance-test/locust/python-flask.py -H https://python-flask-sus3.onrender.com -u 5 -r 10 -t 40 --headless --html locust-report.html
