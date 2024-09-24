@@ -15,7 +15,6 @@ jobs:
         run: python3 -m venv .venv
       - name: Install Dependencies
         run: pip install -r requirements.txt
-
   unit-test:
     needs: [build]
     runs-on: ubuntu-latest
@@ -51,7 +50,6 @@ jobs:
           indicators: true
           output: both
           thresholds: '80'
-
   deploy:
     needs: [build, unit-test]
     runs-on: ubuntu-latest
@@ -66,7 +64,6 @@ jobs:
           path: deploy.json
       - name: Sleep By Two Minutes
         run: sleep 120
-
   acceptance-test:
     needs: [deploy]
     runs-on: ubuntu-latest
@@ -84,7 +81,6 @@ jobs:
         with:
           name: behave-report.html
           path: behave-report.html
-
   performance-test:
     needs: [deploy]
     runs-on: ubuntu-latest
